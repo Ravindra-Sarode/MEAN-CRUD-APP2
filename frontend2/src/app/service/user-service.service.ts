@@ -7,7 +7,7 @@ import User from '../type/user';
 })
 export class UserServiceService {
 
-  apiUrl = "http://localhost:3000";
+  apiUrl = "https://mean-crud-app2-backend.onrender.com";
   httpClient = inject(HttpClient);
   constructor() { }
 
