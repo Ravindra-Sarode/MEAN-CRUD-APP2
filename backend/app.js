@@ -1,29 +1,33 @@
-const express = require('express')
-const app = express()
-const port = process.env.port || 3000;
-const mongoose = require('mongoose')
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+const mongoose = require('mongoose');
 const userRoutes = require("./routes/user-route");
-var cors = require("cors");
+const cors = require("cors");
+require('dotenv').config();
+
 
 app.use(cors());
-//this is the middleware 
 app.use(express.json());
+
 app.get('/', (req, res) => {
-    res.send("running")
-})
+    res.send("running");
+});
 
 app.use(userRoutes);
 
-async function connectDB(){
-    await mongoose.connect("mongodb://127.0.0.1:27017/", {
-        dbname : "UserDB",
-    });
+async function connectDB() {
+    const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/UserDB";
+    try {
+        await mongoose.connect(mongoUri);
+        console.log('MongoDB connected...');
+    } catch (err) {
+        console.error(err);
+    }
 }
 
-connectDB().catch((err) =>{
-    console.error(err);
-})
+connectDB();
 
-app.listen(port, () =>{
-    console.log(`Example app listening on port ${port}`)
-})
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+});
